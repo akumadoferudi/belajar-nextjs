@@ -4,8 +4,8 @@ import Footer from "@/components/footer";
 
 interface ContentElementProps {
   children: any;
-  metaTitle: string;
-  metaDescription: any;
+  metaTitle?: string;
+  metaDescription?: any;
 }
 
 export default function Layout({
