@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import Content from "@/components/content";
 
 interface ContentElementProps {
   children: any;
@@ -25,7 +26,7 @@ export default function Layout({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <p>Content</p>
+      <Content />
       <Footer />
     </div>
   );
