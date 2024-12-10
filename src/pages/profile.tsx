@@ -8,14 +8,13 @@ interface ContentElementProps {
   metaDescription?: any;
 }
 
-export default function Profile({
-  children,
-  metaTitle,
-  metaDescription,
-}: ContentElementProps) {
+export default function Profile() {
   return (
     <>
-      <Layout metaTitle="Profile">
+      <Layout
+        metaTitle="Profile page"
+        metaDescription="This page contains all about your profile"
+      >
         <p>Profile</p>
         {/* <Content /> */}
       </Layout>
