@@ -1,13 +1,11 @@
 // import Head from "next/head";
-import Layout from "@/layout";
+// import Layout from "@/layout";
 // import Content from "@/components/content";
 import { useEffect } from "react";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 
-// interface ContentElementProps {
-//   children?: any;
-//   metaTitle?: string;
-//   metaDescription?: any;
-// }
+const LayoutComponent = dynamic(() => import("@/layout"));
 
 export default function Main() {
   useEffect(() => {
@@ -19,9 +17,13 @@ export default function Main() {
 
   return (
     <>
-      <Layout metaTitle="Main Page" metaDescription="Ja, this is index page">
-        <p>Home</p>
-      </Layout>
+      <LayoutComponent
+        metaTitle="Main Page"
+        metaDescription="Ja, this is index page"
+      >
+        {/* <p>Home</p> */}
+        <Image src="/nextjs-icon.png" alt="next img" width={400} height={400} />
+      </LayoutComponent>
     </>
   );
 }
