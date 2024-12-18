@@ -1,12 +1,25 @@
 /* eslint-disable */
 
 import dynamic from "next/dynamic";
-import type { InferGetStaticPropsType, GetStaticProps } from "next";
-import Link from "next/link";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  Heading,
+  Text,
+  Button,
+} from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const LayoutComponent = dynamic(() => import("@/layout"));
 
-type Notes = {
+type NoteDatas = {
   id: string;
   title: string;
   description: string;
@@ -15,29 +28,72 @@ type Notes = {
   updated_at: string;
 };
 
-export const getStaticProps = (async (context) => {
-  const res = await fetch("https://service.pace-unv.cloud/api/notes");
-  const notes = await res.json();
-  return { props: { notes }, revalidate: 10 };
-}) satisfies GetStaticProps<{
-  notes: Notes;
-}>;
+type Notes = {
+  success: boolean;
+  message: string;
+  data: NoteDatas[];
+};
 
-export default function Notes({
-  notes,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-  console.log("notes => ", notes);
+export default function Notes() {
+  const router = useRouter();
+  const [notes, setNotes] = useState<Notes>({
+    success: false,
+    message: "",
+    data: [],
+  });
+
+  useEffect(() => {
+    async function fetchingData() {
+      const res = await fetch("https://service.pace-unv.cloud/api/notes");
+      const listNotes = await res.json();
+      setNotes(listNotes);
+    }
+    fetchingData();
+  }, []);
+
   return (
     <>
-      <LayoutComponent
-        metaTitle="Notes Page"
-        metaDescription="See and maintain your notes"
-      >
-        {notes.data.map((item: Notes) => (
-          <div>
-            <Link href={`/notes/${item.id}`}>{item.title}</Link>
-          </div>
-        ))}
+      <LayoutComponent metaTitle="Notes">
+        <Box padding="5">
+          <Flex justifyContent="end">
+            <Button
+              colorScheme="blue"
+              onClick={() => router.push("/notes/add")}
+              className="bg-green-700 p-3"
+            >
+              Add Notes
+            </Button>
+          </Flex>
+          <Flex>
+            <Grid templateColumns="repeat(3, 1fr)" gap={5}>
+              {notes?.data?.map((item: NoteDatas) => (
+                <GridItem key={item.id}>
+                  <Card.Root key={item.id}>
+                    <Card.Header>
+                      <Heading>{item?.title}</Heading>
+                    </Card.Header>
+                    <Card.Body>
+                      <Text>{item?.description}</Text>
+                    </Card.Body>
+                    <Card.Footer justifyContent="space-between" flexWrap="wrap">
+                      <Button
+                        onClick={() => router.push(`/notes/edit/${item?.id}`)}
+                        flex="1"
+                        variant="surface"
+                        className="bg-blue-700"
+                      >
+                        Edit
+                      </Button>
+                      <Button flex="1" colorScheme="red" className="bg-red-700">
+                        Delete
+                      </Button>
+                    </Card.Footer>
+                  </Card.Root>
+                </GridItem>
+              ))}
+            </Grid>
+          </Flex>
+        </Box>
       </LayoutComponent>
     </>
   );
