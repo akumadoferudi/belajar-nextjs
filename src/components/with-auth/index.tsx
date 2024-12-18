@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // import { Component } from "react";
 
 export function withAuth(Component: any) {
