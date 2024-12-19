@@ -42,6 +42,21 @@ export default function Notes() {
     data: [],
   });
 
+  const HandleDelete = async (id: any) => {
+    try {
+      const response = await fetch(
+        `https://service.pace-unv.cloud/api/notes/delete/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const result = await response.json();
+      if (result?.success) {
+        router.reload();
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     async function fetchingData() {
       const res = await fetch("https://service.pace-unv.cloud/api/notes");
@@ -84,7 +99,12 @@ export default function Notes() {
                       >
                         Edit
                       </Button>
-                      <Button flex="1" colorScheme="red" className="bg-red-700">
+                      <Button
+                        onClick={() => HandleDelete(item?.id)}
+                        flex="1"
+                        colorScheme="red"
+                        className="bg-red-700"
+                      >
                         Delete
                       </Button>
                     </Card.Footer>
