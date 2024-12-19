@@ -98,7 +98,11 @@ export default function EditNotes() {
               />
             </GridItem>
             <GridItem>
-              <Button onClick={() => HandleSubmit()} colorScheme="blue">
+              <Button
+                onClick={() => HandleSubmit()}
+                colorScheme="blue"
+                className="bg-blue-700 p-3"
+              >
                 Submit
               </Button>
             </GridItem>
